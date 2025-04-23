@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nuevo Superhéroe</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-300">
+  <h1 class="text-4xl text-center py-4" >Nuevo Superhéroe</h1>
+
+  <form class="block w-150 mx-auto p-6 border border rounded-md shadow-md" action="/api/heroes" method="POST" autocomplete="off">
+    <label class="p-4" for="id">ID:</label>
+    <input class="border" type="text" name="id" required><br><br>
+  
+    <label class="p-4" for="nombreSuperHeroe">Nombre Superhéroe:</label>
+    <input  class="border"  type="text" name="nombreSuperHeroe" minlength="3" maxlength="60" required><br><br>
+  
+    <label class="p-4" for="nombreReal">Nombre Real:</label>
+    <input  class="border"  type="text" name="nombreReal" minlength="3" maxlength="60" required><br><br>
+  
+    <label class="p-4" for="edad">Edad:</label>
+    <input class="border"  type="number" name="edad" min="0" required><br><br>
+  
+    <label class="p-4" for="planetaOrigen">Planeta Origen:</label>
+    <input class="border"  type="text" name="planetaOrigen"><br><br>
+  
+    <label class="p-4" for="debilidad">Debilidad:</label>
+    <input class="border"  type="text" name="debilidad"><br><br>
+  
+    <label class="p-4" for="poderes">Poderes (separados por coma):</label>
+    <input class="border"  type="text" name="poderes" required><br><br>
+  
+    <label class="p-4" for="aliados">Aliados (separados por coma):</label>
+    <input class="border"  type="text" name="aliados"><br><br>
+  
+    <label class="p-4" for="enemigos">Enemigos (separados por coma):</label>
+    <input class="border"  type="text" name="enemigos"><br><br>
+  
+    <label class="p-4" for="creador">Creador:</label>
+    <input class="border "  type="text" name="creador"><br><br>
+  
+    <button class=" cursor-pointer text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Crear Superhéroe</button>
+  </form>
+  <br>
+</body>
+</html>

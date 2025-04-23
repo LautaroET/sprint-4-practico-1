@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-300">
+    <table class="w-full shadow-md rounded-lg overflow-hidden border border-collapse">
+        <%-include('partials/header.ejs')%>
+        <tbody>
+            <% superheroes.forEach(hero => { %>
+                <tr class="hover:bg-gray-50 border">
+                    <td class="p-2"><%= hero.id %></td>
+                    <td class="p-2" ><%= hero.nombreSuperHeroe %></td>
+                    <td class="p-2"><%= hero.nombreReal %></td>
+                    <td class="p-2"><%= hero.edad %></td>
+                    <td class="p-2"><%= hero.planetaOrigen %></td>
+                    <td class="p-2"><%= hero.debilidad %></td>
+                    <td class="p-2"><%= hero.poderes.join(", ") %></td>
+                    <td class="p-2"><%= hero.aliados.join(", ") %></td>
+                    <td class="p-2"><%= hero.enemigos.join(", ") %></td>
+                    <td class="p-2"><%= hero.creador %></td>
+                    <td class="p-2"><%= hero.createAt %></td>
+                    <td class="p-2"><a href="/api/heroes/<%= hero.id %>/editar"><button class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Editar</button></a></td>
+                    <td class="p-2" ><button  class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="eliminarHeroe('<%= hero.id %>')">Eliminar</button></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <script>
+        async function eliminarHeroe(id) {
+            const confirmado = confirm("¿Estás seguro de que quieres eliminar este superhéroe?");
+            if (!confirmado) return;
+            try {
+            const respuesta = await fetch(`/api/heroes/${id}`, {
+            method: 'DELETE'
+            });
+            if (respuesta.ok) {
+                alert("Superhéroe eliminado con éxito.");
+              location.reload(); // recarga la página para actualizar la lista
+            } else {
+                const data = await respuesta.json();
+                alert("Error al eliminar: " + data.mensaje);
+            }
+            } catch (error) {
+                alert("Error al conectar con el servidor.");
+                console.error(error);
+            }
+        }
+    </script>
+    
+</body>
+</html>
