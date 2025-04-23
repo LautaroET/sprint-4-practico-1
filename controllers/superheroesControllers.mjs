@@ -54,6 +54,7 @@ export async function actualizarSuperHeroeController(req, res) {
         }
 
         res.json(renderizarSuperheroe(superHeroeActualizado));
+        res.redirect('/api/heroes/nuevo');
     } catch (error) {
         res.status(500).json({ mensaje: 'Error al actualizar el superhéroe', error: error.message });
     }
