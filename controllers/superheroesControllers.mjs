@@ -22,6 +22,7 @@ export async function crearSuperHeroeController(req, res) {
         req.body.enemigos = req.body.enemigos?.split(',').map(e => e.trim()) || [];
     
         const nuevoHeroe = await crearSuperHeroeService(req.body);
+        res.redirect('/api/heroes/nuevo');
         } catch (error) {
             res.status(500).json({ mensaje: 'Error al crear el superhéroe', error: error.message });
         }

@@ -10,74 +10,80 @@
 
   <form class="block w-150 mx-auto p-6 border border rounded-md shadow-md" id="editarFormulario" >
     <label class="p-4" for="id">ID:</label>
-    <input class="border" type="text" name="id" value="<%= hero.id %>" readonly><br><br>
+    <input class="border bg-white field-sizing-content min-w-40" type="text" name="id" value="<%= hero.id %>" readonly><br><br>
 
     <label class="p-4" for="nombreSuperHeroe">Nombre Superhéroe:</label>
-    <input class="border" type="text" name="nombreSuperHeroe" value="<%= hero.nombreSuperHeroe %>" required><br><br>
+    <input class="border bg-white field-sizing-content min-w-40" type="text" name="nombreSuperHeroe" value="<%= hero.nombreSuperHeroe %>" required><br><br>
 
     <label class="p-4" for="nombreReal">Nombre Real:</label>
-    <input class="border" type="text" name="nombreReal" value="<%= hero.nombreReal %>" required><br><br>
+    <input class="border bg-white field-sizing-content min-w-40" type="text" name="nombreReal" value="<%= hero.nombreReal %>" required><br><br>
 
     <label class="p-4" for="edad">Edad:</label>
-    <input class="border" type="number" name="edad" value="<%= hero.edad %>" min="0" required><br><br>
+    <input class="border bg-white field-sizing-content min-w-40" type="number" name="edad" value="<%= hero.edad %>" min="0" required><br><br>
 
     <label class="p-4" for="planetaOrigen">Planeta Origen:</label>
-    <input class="border" type="text" name="planetaOrigen" value="<%= hero.planetaOrigen %>"><br><br>
+    <input class="border bg-white field-sizing-content min-w-40" type="text" name="planetaOrigen" value="<%= hero.planetaOrigen %>"><br><br>
 
     <label class="p-4" for="debilidad">Debilidad:</label>
-    <input class="border" type="text" name="debilidad" value="<%= hero.debilidad %>"><br><br>
+    <input class="border bg-white field-sizing-content min-w-40" type="text" name="debilidad" value="<%= hero.debilidad %>"><br><br>
 
     <label class="p-4" for="poderes">Poderes (separados por coma):</label>
-    <input class="border" type="text" name="poderes" value="<%= hero.poderes.join(', ') %>"><br><br>
+    <input class="border bg-white field-sizing-content min-w-40" type="text" name="poderes" value="<%= hero.poderes.join(', ') %>"><br><br>
 
     <label class="p-4" for="aliados">Aliados (separados por coma):</label>
-    <input class="border" type="text" name="aliados" value="<%= hero.aliados.join(', ') %>"><br><br>
+    <input class="border bg-white field-sizing-content min-w-40" type="text" name="aliados" value="<%= hero.aliados.join(', ') %>"><br><br>
 
     <label class="p-4" for="enemigos">Enemigos (separados por coma):</label>
-    <input class="border" type="text" name="enemigos" value="<%= hero.enemigos.join(', ') %>"><br><br>
+    <input class="border bg-white field-sizing-content min-w-40" type="text" name="enemigos" value="<%= hero.enemigos.join(', ') %>"><br><br>
 
     <label class="p-4" for="creador">Creador:</label>
-    <input class="border" type="text" name="creador" value="<%= hero.creador %>"><br><br>
+    <input class="border bg-white field-sizing-content min-w-40" type="text" name="creador" value="<%= hero.creador %>"><br><br>
 
     <button class=" cursor-pointer text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Guardar Cambios</button>
   </form>
   <br>
 
   <script>
+    // Agrega un event listener al formulario con ID 'editarFormularion' para manejar el evento 'submit'
     document.getElementById('editarFormularion').addEventListener('submit', async function (e) {
-      e.preventDefault();
-
-      const form = e.target;
-      const id = form.id.value;
-
-      const formData = new FormData(form);
-      const data = {};
-
+      e.preventDefault(); // Evita que el formulario se envíe de manera tradicional (recargando la página)
+  
+      const form = e.target; // Obtiene el formulario desde el evento
+      const id = form.id.value; // Obtiene el valor del input con nombre 'id' (presumiblemente el ID del héroe)
+  
+      const formData = new FormData(form); // Crea un objeto FormData con los datos del formulario
+      const data = {}; // Objeto donde se almacenarán los datos a enviar
+  
+      // Recorre todos los pares clave-valor del FormData y los guarda en el objeto 'data'
       formData.forEach((value, key) => {
         data[key] = value;
       });
-
-      // Convertir poderes, aliados y enemigos en arrays
+  
+      // Si existen, convierte los campos de texto separados por comas en arrays
       if (data.poderes) data.poderes = data.poderes.split(',').map(p => p.trim());
       if (data.aliados) data.aliados = data.aliados.split(',').map(a => a.trim());
       if (data.enemigos) data.enemigos = data.enemigos.split(',').map(e => e.trim());
-
+  
       try {
+        // Envía una solicitud PUT al servidor con los datos del formulario
         const response = await fetch(`/api/heroes/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify(data) // Convierte los datos a formato JSON
         });
-
+  
+        // Si la respuesta es exitosa, redirige al usuario al dashboard
         if (response.ok) {
           window.location.href = '/api/dashboard';
         } else {
+          // Si hay error, muestra un mensaje con el error retornado por el servidor
           const error = await response.json();
           alert('Error al actualizar: ' + error.mensaje);
         }
       } catch (err) {
+        // Captura errores de red o del fetch y muestra un mensaje
         console.error(err);
         alert('Error al conectar con el servidor');
       }

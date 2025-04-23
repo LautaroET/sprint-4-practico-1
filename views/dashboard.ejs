@@ -30,26 +30,35 @@
         </tbody>
     </table>
     <script>
+        /**
+         * Función para eliminar un superhéroe por su ID.
+         * Se ejecuta, por ejemplo, al hacer clic en un botón de eliminar.
+         */
         async function eliminarHeroe(id) {
-            const confirmado = confirm("¿Estás seguro de que quieres eliminar este superhéroe?");
-            if (!confirmado) return;
+          // Muestra un cuadro de confirmación para evitar eliminaciones accidentales
+        const confirmado = confirm("¿Estás seguro de que quieres eliminar este superhéroe?");
+          if (!confirmado) return; // Si el usuario cancela, se interrumpe la ejecución
             try {
+            // Realiza una petición DELETE al backend para eliminar el superhéroe
             const respuesta = await fetch(`/api/heroes/${id}`, {
-            method: 'DELETE'
+                method: 'DELETE'
             });
+            // Si la respuesta es exitosa, informa al usuario y recarga la página
             if (respuesta.ok) {
                 alert("Superhéroe eliminado con éxito.");
-              location.reload(); // recarga la página para actualizar la lista
+              location.reload(); // Recarga la página para actualizar la lista
             } else {
+              // Si hay un error, muestra el mensaje retornado por el servidor
                 const data = await respuesta.json();
                 alert("Error al eliminar: " + data.mensaje);
             }
             } catch (error) {
-                alert("Error al conectar con el servidor.");
-                console.error(error);
+            // Maneja errores de red o problemas con el servidor
+            alert("Error al conectar con el servidor.");
+            console.error(error); // Imprime el error en la consola para depuración
             }
         }
-    </script>
+        </script>
     
 </body>
 </html>
